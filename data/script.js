@@ -24,7 +24,7 @@
         ns_protocol: /^(http|https)$/,
         clock_timezone: /^.{2,}$/,
         time_format: /^(12|24)$/,
-        email_format: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+        email_format: /^[\w-\.]+(\+[A-Za-z0-9]+)?@([\w-]+\.)+[\w-]{2,4}$/,
         not_empty: /^.{1,}$/,
         custom_nodatatimer: /^(?:[6-9]|[1-5][0-9]|60)?$/,
 
@@ -612,12 +612,13 @@
         }
 
         //Nightscout
-        json['api_secret'] = $('#api_secret').val();
         var url = new URL("http://bogus.url/");
         url.protocol = $('#ns_protocol').val()
         url.hostname = $('#ns_hostname').val();
         url.port = $('#ns_port').val();
         json['nightscout_url'] = url.toString();
+        json['api_secret'] = $('#api_secret').val();
+        json['nightscout_simplified_api'] = $('#nightscout_simplified_api').is(':checked');
 
         //Glucose settings
         json['units'] = $('#bg_units').val();
@@ -906,6 +907,7 @@
 
         //Nightscout        
         $('#api_secret').val(json['api_secret']);
+        $('#nightscout_simplified_api').prop('checked', json['nightscout_simplified_api']);
         var url = undefined;
         if ("canParse" in URL) {
             if (URL.canParse(json['nightscout_url'])) {
